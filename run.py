@@ -100,17 +100,18 @@ def make_fetcher(settings: Settings):
 def demo_sessions() -> list[dict]:
     now = time.time()
     return [
-        {"id": "d1", "agent": "claude", "status": "attention", "cwd": r"C:\work\brand_harmonization",
+        {"id": "d1", "agent": "claude", "status": "attention", "cwd": r"C:\code\api-gateway",
          "custom_title": "Gateway retries", "first_prompt": "Refactor the gateway retries", "source": "VS Code", "updated_at": now - 30,
          "attention_reason": "Claude needs your permission to use Bash"},
-        {"id": "d2", "agent": "claude", "status": "running", "cwd": r"C:\work\session-overlay",
-         "ai_title": "Store test coverage", "first_prompt": "Write tests for the store", "source": "CLI", "updated_at": now - 5},
-        {"id": "d3", "agent": "claude", "status": "answered", "cwd": r"C:\work\visibility_output",
-         "first_prompt": "Summarise last week's ACoS changes", "source": "VS Code", "updated_at": now - 420},
+        {"id": "d2", "agent": "claude", "status": "running", "cwd": r"C:\code\claude-session-tracker",
+         "ai_title": "Store test coverage", "first_prompt": "Write tests for the store", "source": "CLI", "updated_at": now - 5,
+         "activity": "Run tests"},
+        {"id": "d3", "agent": "claude", "status": "answered", "cwd": r"C:\code\blog",
+         "first_prompt": "Fix the broken links in the docs", "source": "VS Code", "updated_at": now - 420},
         {"id": "d4", "agent": "cowork", "status": "running", "title": "Weekly report deck", "source": "Cowork",
          "updated_at": now - 12, "best_effort": True},
-        {"id": "d5", "agent": "claude", "status": "error", "cwd": r"C:\work\keyword-planner",
-         "first_prompt": "Classify search terms", "source": "CLI", "updated_at": now - 90},
+        {"id": "d5", "agent": "claude", "status": "error", "cwd": r"C:\code\data-pipeline",
+         "first_prompt": "Migrate the ETL job", "source": "CLI", "updated_at": now - 90},
     ]
 
 

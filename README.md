@@ -1,6 +1,43 @@
-# Session Overlay
+# Claude Session Tracker
 
-A small always-on-top pill at the top centre of your screen that expands into a detailed list when you hover it. It lists every running AI coding session, each with a coloured status dot, so you don't have to switch windows to check on them.
+[![tests](https://github.com/Nilayyyy/claude-session-tracker/actions/workflows/tests.yml/badge.svg)](https://github.com/Nilayyyy/claude-session-tracker/actions/workflows/tests.yml)
+![Windows 10/11](https://img.shields.io/badge/platform-Windows%2010%2F11-0078D6)
+![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-3776AB)
+![No dependencies](https://img.shields.io/badge/dependencies-none-brightgreen)
+[![MIT License](https://img.shields.io/badge/license-MIT-lightgrey)](LICENSE)
+
+**An always-on-top status widget for your Claude Code sessions on Windows.** When several sessions are running across VS Code windows and terminals, it shows you at a glance which one is waiting for you, which are still working, and which are done. You don't need to switch windows to check.
+
+<p align="center">
+  <img src="docs/pill.png" alt="Collapsed pill: Sessions with coloured counts" width="260"><br><br>
+  <img src="docs/panel.png" alt="Expanded panel listing sessions with status dots" width="475">
+</p>
+
+It sits as a small pill at the top of the screen and expands into the full list when you hover it. Click a row to jump straight to that chat.
+
+## Features
+
+- **Live status for every session:** needs you, running, done or error, driven by Claude Code hooks.
+- **Click to jump:** brings the right VS Code window or terminal to the front, and opens the exact chat tab for sessions in the VS Code extension.
+- **Alerts:** a small banner (with an optional sound) when a session needs you, finishes or fails.
+- **Live details on hover:** the current tool ("Editing store.py", "Run tests"), context size, the number of working subagents, and the last reply.
+- **Lightweight and private:** Python standard library only. It makes no network calls and keeps all data in local files.
+- **Safe to install:** hooks are merged into `settings.json` with a backup first, and uninstall removes only this tool's hooks.
+
+## Quick start
+
+```powershell
+git clone https://github.com/Nilayyyy/claude-session-tracker.git
+cd claude-session-tracker
+python run.py --demo            # preview with sample sessions; right-click > Quit
+python run.py --install-hooks   # add the status hooks to Claude Code
+pythonw run.py                  # start the widget (no console window)
+python run.py --startup on      # optional: start it at login
+```
+
+Then restart any open Claude Code sessions so they pick up the hooks.
+
+## Status colours
 
 | Dot | Meaning | Triggered by |
 |---|---|---|
@@ -31,10 +68,10 @@ No network calls are made, and no model is called. All data stays in local files
 
 No pip packages are needed (`requirements.txt` is intentionally empty).
 
-## Setup
+## Setup in detail
 
 ```powershell
-cd $HOME\Documents\projects\session-overlay
+cd claude-session-tracker
 copy .env.example .env          # optional: only if you want to change defaults
 python run.py --demo            # 1. check the widget looks right (sample data); right-click > Quit
 python run.py --install-hooks   # 2. add hooks to %USERPROFILE%\.claude\settings.json (a backup is made)
@@ -181,3 +218,7 @@ No live Claude sessions are needed.
 - **Already-open sessions don't pick up newly installed hooks** until they restart.
 - **With `--shell-form`, the Claude process can't be identified.** Closed sessions linger until `MAX_AGE_HOURS` or "Clear finished".
 - **Two hooks firing within the same instant can race.** The later one wins, and the next event corrects it.
+
+## License
+
+[MIT](LICENSE). This is an independent hobby project and is not affiliated with or endorsed by Anthropic.
