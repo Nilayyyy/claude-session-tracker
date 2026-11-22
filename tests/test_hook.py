@@ -129,6 +129,18 @@ class HookProcessTest(unittest.TestCase):
             result = self.run_hook(json.dumps(payload("Stop")), blocker / "sessions")
             self.assertEqual((result.returncode, result.stdout), (0, ""))
 
+    def test_stdin_with_utf8_bom_is_accepted(self):
+        # Windows PowerShell 5.1 (the --shell-form hook) pipes stdin with a BOM.
+        with tempfile.TemporaryDirectory() as tmp:
+            state_dir = Path(tmp) / "sessions"
+            subprocess.run(
+                [sys.executable, str(PROJECT / "src" / "hook.py"), hook.MARKER, "--state-dir", str(state_dir)],
+                input=b"\xef\xbb\xbf" + json.dumps(payload("UserPromptSubmit", prompt="café ✓"), ensure_ascii=False).encode(),
+                capture_output=True, timeout=20,
+            )
+            saved = json.loads((state_dir / "claude-abc-123.json").read_text(encoding="utf-8"))
+            self.assertEqual(saved["first_prompt"], "café ✓")
+
 
 if __name__ == "__main__":
     unittest.main()

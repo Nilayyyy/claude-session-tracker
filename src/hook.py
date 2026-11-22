@@ -220,7 +220,10 @@ def main(argv: list[str]) -> int:
     try:
         if state_dir is None or sys.stdin is None:
             return 0
-        raw = sys.stdin.read()
+        # Claude Code sends UTF-8 whatever the Windows code page; utf-8-sig also drops the BOM
+        # that Windows PowerShell 5.1 adds when piping (the --shell-form path).
+        stream = getattr(sys.stdin, "buffer", None)
+        raw = stream.read().decode("utf-8-sig", errors="replace") if stream else sys.stdin.read().lstrip("﻿")
         if not raw.strip():
             return 0
         payload = json.loads(raw)
